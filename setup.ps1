@@ -57,10 +57,6 @@ New-Symlink "$dotfiles\powershell\Microsoft.PowerShell_profile.ps1" $psProfile
 $wtSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 New-Symlink "$dotfiles\terminal\settings.json" $wtSettings
 
-# Claude Code settings
-$claudeSettings = "$env:USERPROFILE\.claude\settings.json"
-New-Symlink "$dotfiles\claude\settings.json" $claudeSettings
-
 # Claude Code skills (user-created only)
 $claudeSkillDotfiles = "$env:USERPROFILE\.claude\skills\dotfiles"
 New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
