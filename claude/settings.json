@@ -1,0 +1,12 @@
+{
+  "env": {
+    "API_TIMEOUT_MS": "60000",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "EDITOR": "D:\\工具安装\\MarkText\\MarkText.exe"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "powershell -NoProfile -File C:/Users/85246/.claude/statusline.ps1"
+  },
+  "skipDangerousModePermissionPrompt": true
+}

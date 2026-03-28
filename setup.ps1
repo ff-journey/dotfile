@@ -30,6 +30,23 @@ function New-Symlink($target, $link) {
     Write-Host "  linked: $link" -ForegroundColor Green
 }
 
+function New-DirSymlink($target, $link) {
+    if (Test-Path $link) {
+        $item = Get-Item $link -Force
+        if ($item.LinkType -eq "SymbolicLink") {
+            Write-Host "  already linked: $link" -ForegroundColor DarkGray
+            return
+        }
+        $backup = "$link.bak"
+        Move-Item $link $backup -Force
+        Write-Host "  backed up: $link -> $backup" -ForegroundColor Yellow
+    }
+    $parentDir = Split-Path $link
+    if (!(Test-Path $parentDir)) { New-Item -ItemType Directory -Path $parentDir -Force | Out-Null }
+    New-Item -ItemType SymbolicLink -Path $link -Target $target -Force -ErrorAction Stop | Out-Null
+    Write-Host "  linked: $link" -ForegroundColor Green
+}
+
 Write-Host "`n=== dotfiles setup ===" -ForegroundColor Cyan
 
 # PowerShell 7 profile
@@ -39,5 +56,13 @@ New-Symlink "$dotfiles\powershell\Microsoft.PowerShell_profile.ps1" $psProfile
 # Windows Terminal settings
 $wtSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 New-Symlink "$dotfiles\terminal\settings.json" $wtSettings
+
+# Claude Code settings
+$claudeSettings = "$env:USERPROFILE\.claude\settings.json"
+New-Symlink "$dotfiles\claude\settings.json" $claudeSettings
+
+# Claude Code skills (user-created only)
+$claudeSkillDotfiles = "$env:USERPROFILE\.claude\skills\dotfiles"
+New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
