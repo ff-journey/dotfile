@@ -61,26 +61,4 @@ New-Symlink "$dotfiles\terminal\settings.json" $wtSettings
 $claudeSkillDotfiles = "$env:USERPROFILE\.claude\skills\dotfiles"
 New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 
-# Right-click context menu: "Open in Terminal"
-Write-Host "`n=== Context menu: Open in Terminal ===" -ForegroundColor Cyan
-$wtExe = "wt.exe"
-# Use Unicode code points to avoid shell encoding issues: 在此处打开 Terminal
-$menuLabel = [string]([char]0x5728 + [char]0x6B64 + [char]0x5904 + [char]0x6253 + [char]0x5F00 + " Terminal")
-
-# Right-click inside folder (background)
-$bgKey = "HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenInTerminal"
-New-Item -Path "$bgKey\command" -Force | Out-Null
-Set-ItemProperty -Path $bgKey -Name "(default)" -Value $menuLabel
-Set-ItemProperty -Path $bgKey -Name "Icon" -Value $wtExe
-Set-ItemProperty -Path "$bgKey\command" -Name "(default)" -Value "wt.exe -d `"%V`""
-Write-Host "  set: folder background context menu" -ForegroundColor Green
-
-# Right-click on folder itself
-$dirKey = "HKLM:\SOFTWARE\Classes\Directory\shell\OpenInTerminal"
-New-Item -Path "$dirKey\command" -Force | Out-Null
-Set-ItemProperty -Path $dirKey -Name "(default)" -Value $menuLabel
-Set-ItemProperty -Path $dirKey -Name "Icon" -Value $wtExe
-Set-ItemProperty -Path "$dirKey\command" -Name "(default)" -Value "wt.exe -d `"%1`""
-Write-Host "  set: folder context menu" -ForegroundColor Green
-
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
