@@ -1,6 +1,13 @@
 ---
 name: dotfiles
-description: Manage dotfiles repo (Windows Terminal + PowerShell 7 config sync). Use when user wants to: sync/push terminal or shell config changes to git, pull terminal config updates on home machine, record a newly installed CLI tool into bootstrap.ps1, or set up dotfiles on a new machine. Triggers on phrases like "同步terminal配置", "同步命令行配置", "同步shell配置", "更新terminal配置", "记录命令行工具", "push dotfiles", "pull dotfiles", "装了新命令行工具", "dotfiles", "PowerShell配置同步", "终端配置同步".
+description: >-
+  Manage dotfiles repo (Windows Terminal + PowerShell 7 config sync).
+  Use when user wants to sync/push terminal or shell config changes to git,
+  pull terminal config updates on home machine, record a newly installed CLI
+  tool into bootstrap.ps1, or set up dotfiles on a new machine.
+  Triggers on phrases like 同步terminal配置, 同步命令行配置, 同步shell配置,
+  更新terminal配置, 记录命令行工具, push dotfiles, pull dotfiles,
+  装了新命令行工具, dotfiles, PowerShell配置同步, 终端配置同步.
 ---
 
 # Dotfiles Skill
