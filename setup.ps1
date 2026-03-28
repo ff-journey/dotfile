@@ -61,4 +61,21 @@ New-Symlink "$dotfiles\terminal\settings.json" $wtSettings
 $claudeSkillDotfiles = "$env:USERPROFILE\.claude\skills\dotfiles"
 New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 
+# Right-click context menu: "Open in Terminal"
+Write-Host "`n=== Context menu: Open in Terminal ===" -ForegroundColor Cyan
+
+$bgKey = "HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenInTerminal"
+New-Item -Path "$bgKey\command" -Force | Out-Null
+Set-ItemProperty -Path $bgKey -Name "(default)" -Value "Open in Terminal"
+Set-ItemProperty -Path $bgKey -Name "Icon" -Value "wt.exe"
+Set-ItemProperty -Path "$bgKey\command" -Name "(default)" -Value "wt.exe -d `"%V`""
+Write-Host "  set: folder background context menu" -ForegroundColor Green
+
+$dirKey = "HKLM:\SOFTWARE\Classes\Directory\shell\OpenInTerminal"
+New-Item -Path "$dirKey\command" -Force | Out-Null
+Set-ItemProperty -Path $dirKey -Name "(default)" -Value "Open in Terminal"
+Set-ItemProperty -Path $dirKey -Name "Icon" -Value "wt.exe"
+Set-ItemProperty -Path "$dirKey\command" -Name "(default)" -Value "wt.exe -d `"%1`""
+Write-Host "  set: folder context menu" -ForegroundColor Green
+
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
