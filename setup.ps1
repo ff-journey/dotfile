@@ -64,7 +64,8 @@ New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 # Right-click context menu: "Open in Terminal"
 Write-Host "`n=== Context menu: Open in Terminal ===" -ForegroundColor Cyan
 $wtExe = "wt.exe"
-$menuLabel = "在此处打开 Terminal"
+# Use Unicode code points to avoid shell encoding issues: 在此处打开 Terminal
+$menuLabel = [string]([char]0x5728 + [char]0x6B64 + [char]0x5904 + [char]0x6253 + [char]0x5F00 + " Terminal")
 
 # Right-click inside folder (background)
 $bgKey = "HKLM:\SOFTWARE\Classes\Directory\Background\shell\OpenInTerminal"
