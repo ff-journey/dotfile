@@ -1,12 +1,20 @@
 # dotfiles setup script
-# Run as Administrator in PowerShell 7:
-#   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-#   .\setup.ps1
+# Must run as Administrator:
+#   Right-click Windows Terminal -> "Run as administrator"
+#   Then: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+#         cd D:\dotfiles  (or wherever you cloned)
+#         .\setup.ps1
+
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Write-Host "ERROR: Please run this script as Administrator." -ForegroundColor Red
+    exit 1
+}
 
 $dotfiles = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 function New-Symlink($target, $link) {
-    if (Test-Path $link) {
+    if (Test-Path $link -PathType Leaf) {
         $item = Get-Item $link -Force
         if ($item.LinkType -eq "SymbolicLink") {
             Write-Host "  already linked: $link" -ForegroundColor DarkGray
@@ -18,7 +26,7 @@ function New-Symlink($target, $link) {
     }
     $parentDir = Split-Path $link
     if (!(Test-Path $parentDir)) { New-Item -ItemType Directory -Path $parentDir -Force | Out-Null }
-    New-Item -ItemType SymbolicLink -Path $link -Target $target -Force | Out-Null
+    New-Item -ItemType SymbolicLink -Path $link -Target $target -Force -ErrorAction Stop | Out-Null
     Write-Host "  linked: $link" -ForegroundColor Green
 }
 
