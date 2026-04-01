@@ -19,8 +19,7 @@ if (-not $FrpcBin) {
     # fallback: common install locations
     $candidates = @(
         "$env:ProgramFiles\frp\frpc.exe",
-        "$env:LOCALAPPDATA\frp\frpc.exe",
-        "G:\tool\frp\frp_0.68.0_windows_amd64\frpc.exe"
+        "$env:LOCALAPPDATA\frp\frpc.exe"
     )
     foreach ($c in $candidates) {
         if (Test-Path $c) { $FrpcBin = $c; break }
