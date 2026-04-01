@@ -5,7 +5,8 @@ description: >-
   Use when user wants to sync/push terminal or shell config changes to git,
   pull terminal config updates on home machine, record a newly installed CLI
   tool into bootstrap.ps1, or set up dotfiles on a new machine.
-  Triggers on phrases like 同步terminal配置, 同步命令行配置, 同步shell配置,
+  Triggers on phrases like terminal push, terminal pull,
+  同步terminal配置, 同步命令行配置, 同步shell配置,
   更新terminal配置, 记录命令行工具, push dotfiles, pull dotfiles,
   装了新命令行工具, dotfiles, PowerShell配置同步, 终端配置同步.
 ---
@@ -41,33 +42,42 @@ If a command fails with "access denied" or "requires elevation":
 
 ## Workflows
 
-### 1. Sync config changes (push)
+### 1. terminal push — 推送本地最新改动到 git 仓库
 
-Run in dotfiles dir, show user what changed first:
+Trigger: `terminal push`, `push dotfiles`, `同步terminal配置`
 
+Steps:
+1. Show what changed:
 ```powershell
 git -C D:\dotfiles status
 git -C D:\dotfiles diff
 ```
-
-Then commit and push:
-
+2. Stage all changed tracked files, commit, and push:
 ```powershell
-git -C D:\dotfiles add powershell/Microsoft.PowerShell_profile.ps1 terminal/settings.json
+git -C D:\dotfiles add powershell/Microsoft.PowerShell_profile.ps1 terminal/settings.json bootstrap.ps1 setup.ps1 claude/skills/dotfiles/SKILL.md README.md
 git -C D:\dotfiles commit -m "update: <brief description>"
 git -C D:\dotfiles push
 ```
+Only stage files that actually have changes. Describe the changes in the commit message.
 
-Only stage config files unless user also wants bootstrap/setup changes committed.
+### 2. terminal pull — 拉取最新配置并执行配置脚本
 
-### 2. Pull updates (home machine)
+Trigger: `terminal pull`, `pull dotfiles`, `拉取terminal配置`
 
+Steps:
+1. Pull latest from remote:
 ```powershell
-cd <dotfiles-dir>
-git pull
+git -C D:\dotfiles pull
 ```
-
-Symlinks already point to repo files — no recreation needed. Remind user to restart terminal.
+2. Run bootstrap to ensure all dependencies are installed:
+```powershell
+pwsh -File D:\dotfiles\bootstrap.ps1
+```
+3. Run setup to ensure all symlinks are in place:
+```powershell
+pwsh -File D:\dotfiles\setup.ps1
+```
+4. Remind user to restart terminal to apply changes.
 
 ### 3. Record a newly installed tool
 
