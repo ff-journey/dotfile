@@ -16,6 +16,7 @@ scoop install frp
 # Place frpc.exe in PATH or one of:
 #   $env:ProgramFiles\frp\frpc.exe
 #   $env:LOCALAPPDATA\frp\frpc.exe
+#   G:\tool\frp\frp_0.68.0_windows_amd64\frpc.exe  (home PC)
 ```
 
 ### Linux (frps)
@@ -31,8 +32,6 @@ sudo chmod +x /usr/local/bin/frps
 ```
 
 ## frpc start
-
-Trigger: `frpc start`
 
 1. Check `$DOTFILES/frp/frpc.toml` exists. If not:
    - Copy `frpc.toml.example` → `frpc.toml`
@@ -50,8 +49,6 @@ pwsh -File $DOTFILES/frp/frpc.ps1 stop
 
 ## frps start
 
-Trigger: `frps start`
-
 1. Check `$DOTFILES/frp/frps.toml` exists. If not:
    - Copy `frps.toml.example` → `frps.toml`
    - Prompt user to fill in `auth.token`
@@ -68,8 +65,6 @@ bash $DOTFILES/frp/frps.sh stop
 
 ## frpc add
 
-Trigger: `frpc add`, `frp 加端口`, `frp 增加映射`
-
 1. Read `$DOTFILES/frp/frpc.toml`.
 2. Append:
 ```toml
@@ -85,4 +80,15 @@ remotePort = <remote-port>
 ```powershell
 pwsh -File $DOTFILES/frp/frpc.ps1 stop
 pwsh -File $DOTFILES/frp/frpc.ps1 start
+```
+
+## frps add
+
+1. Read `$DOTFILES/frp/frps.toml`.
+2. Server-side typically only needs `bindPort` — no per-proxy config needed for basic TCP proxies.
+3. If using `allowPorts` or XTCP/STCP, append the relevant config to `frps.toml` and update `frps.toml.example`.
+4. If frps is running, remind user to restart:
+```bash
+bash $DOTFILES/frp/frps.sh stop
+bash $DOTFILES/frp/frps.sh start
 ```

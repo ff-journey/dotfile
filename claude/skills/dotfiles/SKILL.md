@@ -7,7 +7,7 @@ description: >-
   tool into bootstrap.ps1, set up dotfiles on a new machine,
   or manage frp client/server (start, stop, add proxy).
   Triggers on phrases like terminal push, terminal pull,
-  frpc start, frpc stop, frpc add, frps start, frps stop,
+  frpc start, frpc stop, frpc add, frps start, frps stop, frps add,
   同步terminal配置, 同步命令行配置, 同步shell配置,
   更新terminal配置, 记录命令行工具, push dotfiles, pull dotfiles,
   装了新命令行工具, dotfiles, PowerShell配置同步, 终端配置同步.
@@ -20,10 +20,11 @@ description: >-
 **Never hardcode the dotfiles path.** Resolve dynamically:
 
 ```bash
-DOTFILES="$(dirname "$(dirname "$(dirname "$(readlink -f "$HOME/.claude/skills/dotfiles")")")")"
+# Works on both Linux and Windows (Git Bash / MSYS2)
+DOTFILES="$(cd "$(dirname "$(readlink "$HOME/.claude/skills/dotfiles" 2>/dev/null || echo "$HOME/.claude/skills/dotfiles")")/../../.." && pwd)"
 ```
 
-The symlink `~/.claude/skills/dotfiles` → `<repo>/claude/skills/dotfiles/`, three levels up = repo root.
+Fallback: if the current working directory is already inside the repo, use `git rev-parse --show-toplevel`.
 
 All commands below use `$DOTFILES` as the resolved path.
 
@@ -32,12 +33,13 @@ All commands below use `$DOTFILES` as the resolved path.
 | Command | Action | Reference |
 |---------|--------|-----------|
 | `terminal push` | Stage, commit, push config changes | [terminal-sync.md](references/terminal-sync.md) |
-| `terminal pull` | Pull + run bootstrap + setup | [terminal-sync.md](references/terminal-sync.md) |
+| `terminal pull` | Pull + setup symlinks + bootstrap if needed | [terminal-sync.md](references/terminal-sync.md) |
 | `frpc start` | Start frp client + auto-start | [frp.md](references/frp.md) — "frpc start" |
 | `frpc stop` | Stop frp client + remove auto-start | [frp.md](references/frp.md) — "frpc start" |
 | `frpc add` | Add port mapping to frpc config | [frp.md](references/frp.md) — "frpc add" |
 | `frps start` | Start frp server + systemd | [frp.md](references/frp.md) — "frps start" |
 | `frps stop` | Stop frp server + remove service | [frp.md](references/frp.md) — "frps start" |
+| `frps add` | Add port mapping to frps config | [frp.md](references/frp.md) — "frps add" |
 | Record new tool | Add to bootstrap.ps1 | [setup.md](references/setup.md) — "Record tool" |
 | New machine setup | Clone + bootstrap + setup | [setup.md](references/setup.md) — "First-time setup" |
 
