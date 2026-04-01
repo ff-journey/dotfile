@@ -20,8 +20,24 @@ description: >-
 - **Tracked files**:
   - `powershell/Microsoft.PowerShell_profile.ps1` ← symlinked from `$PROFILE`
   - `terminal/settings.json` ← symlinked from Windows Terminal settings
-  - `bootstrap.ps1` ← dependency installer (winget)
-  - `setup.ps1` ← symlink creator (requires admin)
+  - `bootstrap.ps1` ← dependency installer (winget + gsudo + Developer Mode)
+  - `setup.ps1` ← symlink creator (auto-elevates if needed)
+
+## Privilege Escalation Strategy
+
+The dotfiles use a two-layer approach to minimize admin interruptions:
+
+1. **Developer Mode** — enabled once via `bootstrap.ps1` (gsudo triggers UAC).
+   After this, symlink creation no longer needs admin.
+2. **gsudo** — installed via winget. For the rare cases that still need admin
+   (font install, registry writes), gsudo elevates a single command with a UAC
+   prompt, so the whole terminal does NOT need to run as admin.
+
+### When Claude Code needs admin
+
+If a command fails with "access denied" or "requires elevation":
+- Prefix the command with `gsudo` (or `gsudo -- <command>` for commands with flags).
+- gsudo will show a UAC dialog to the user — this is the only manual step needed.
 
 ## Workflows
 
@@ -78,13 +94,13 @@ git -C D:\dotfiles push
 ```powershell
 git clone https://github.com/ff-journey/dotfile.git <target-dir>
 cd <target-dir>
-.\bootstrap.ps1          # normal user — installs deps
-# Then reopen as Administrator:
-.\setup.ps1              # creates symlinks
+.\bootstrap.ps1          # installs deps, gsudo, enables Developer Mode (UAC once)
+.\setup.ps1              # creates symlinks (no admin needed after Developer Mode)
 ```
 
 ## Notes
 
-- `setup.ps1` requires Administrator — remind user if they need to run it
 - `bootstrap.ps1` is idempotent — safe to re-run
+- `setup.ps1` auto-elevates via gsudo if Developer Mode is not enabled
 - `terminal/settings.json` contains Anaconda paths with `D:\conda` — may differ on home machine, edit before push if needed
+- gsudo caches credentials briefly — multiple elevated commands in quick succession only prompt UAC once

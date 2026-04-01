@@ -1,17 +1,23 @@
 # dotfiles setup script
-# Must run as Administrator:
-#   Right-click Windows Terminal -> "Run as administrator"
-#   Then: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-#         cd D:\dotfiles  (or wherever you cloned)
-#         .\setup.ps1
-
-$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-    Write-Host "ERROR: Please run this script as Administrator." -ForegroundColor Red
-    exit 1
-}
+# With Developer Mode enabled, symlinks work without admin.
+# If Developer Mode is off, the script will auto-elevate via gsudo.
+#
+# Usage:
+#   cd D:\dotfiles
+#   .\setup.ps1
 
 $dotfiles = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# ── Check if we can create symlinks ─────────────────────────────────────────
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+$devModePath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
+$devModeEnabled = (Get-ItemProperty -Path $devModePath -Name AllowDevelopmentWithoutDevLicense -ErrorAction SilentlyContinue).AllowDevelopmentWithoutDevLicense -eq 1
+
+if (-not $isAdmin -and -not $devModeEnabled) {
+    Write-Host "Neither admin nor Developer Mode detected. Elevating via gsudo..." -ForegroundColor Yellow
+    gsudo -- pwsh -File "$dotfiles\setup.ps1"
+    exit $LASTEXITCODE
+}
 
 function New-Symlink($target, $link) {
     if (Test-Path $link -PathType Leaf) {

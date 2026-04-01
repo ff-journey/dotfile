@@ -10,6 +10,7 @@ Windows Terminal + PowerShell 7 configuration.
 | [Windows Terminal](https://github.com/microsoft/terminal) | 终端模拟器 | `winget install Microsoft.WindowsTerminal` |
 | [oh-my-posh](https://ohmyposh.dev) | Prompt 渲染引擎 | `winget install JanDeDobbeleer.OhMyPosh` |
 | [JetBrainsMono NF](https://www.nerdfonts.com) | Nerd Font（图标字体） | `oh-my-posh font install JetBrainsMono` |
+| [gsudo](https://github.com/gerardog/gsudo) | sudo for Windows（单命令提权） | `winget install gerardog.gsudo` |
 
 **oh-my-posh 主题**：`paradox`（路径 `$env:POSH_THEMES_PATH/paradox.omp.json`）
 
@@ -20,13 +21,15 @@ Windows Terminal + PowerShell 7 configuration.
 git clone https://github.com/<your-username>/dotfiles.git D:\dotfiles
 cd D:\dotfiles
 
-# 2. 安装依赖（普通用户权限）
+# 2. 安装依赖 + 开启开发者模式（UAC 弹窗确认一次）
 .\bootstrap.ps1
 
-# 3. 创建符号链接（需要管理员）
-#    右键 Windows Terminal -> "以管理员身份运行"
+# 3. 创建符号链接（开发者模式下无需管理员）
 .\setup.ps1
 ```
+
+> **提权策略**：`bootstrap.ps1` 会通过 gsudo 开启 Windows 开发者模式，
+> 之后创建符号链接不再需要管理员权限。字体安装等少数操作仍通过 gsudo 按需提权。
 
 ## 文件结构
 
@@ -36,8 +39,8 @@ dotfiles/
 │   └── Microsoft.PowerShell_profile.ps1   # $PROFILE
 ├── terminal/
 │   └── settings.json                       # Windows Terminal 配置
-├── bootstrap.ps1                           # 安装依赖
-└── setup.ps1                               # 创建符号链接
+├── bootstrap.ps1                           # 安装依赖 + gsudo + 开发者模式
+└── setup.ps1                               # 创建符号链接（自动提权）
 ```
 
 ## 日常同步
