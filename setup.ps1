@@ -61,4 +61,7 @@ New-Symlink "$dotfiles\terminal\settings.json" $wtSettings
 $claudeSkillDotfiles = "$env:USERPROFILE\.claude\skills\dotfiles"
 New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 
+$claudeSkillCreator = "$env:USERPROFILE\.claude\skills\skill-creator"
+New-DirSymlink "$dotfiles\claude\skills\skill-creator" $claudeSkillCreator
+
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
