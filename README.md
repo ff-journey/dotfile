@@ -39,6 +39,11 @@ dotfiles/
 │   └── Microsoft.PowerShell_profile.ps1   # $PROFILE
 ├── terminal/
 │   └── settings.json                       # Windows Terminal 配置
+├── frp/
+│   ├── frpc.toml.example                   # frp 客户端配置模板
+│   ├── frpc.ps1                            # frp 客户端启停 + 开机自启 (Windows)
+│   ├── frps.toml.example                   # frp 服务端配置模板
+│   └── frps.sh                             # frp 服务端启停 + systemd (Linux)
 ├── bootstrap.ps1                           # 安装依赖 + gsudo + 开发者模式
 └── setup.ps1                               # 创建符号链接（自动提权）
 ```
