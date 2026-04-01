@@ -7,7 +7,7 @@ description: >-
   tool into bootstrap.ps1, set up dotfiles on a new machine,
   or manage frp client/server (start, stop, add proxy).
   Triggers on phrases like terminal push, terminal pull,
-  frpc start, frpc stop, frpc add, frps start, frps stop, frps add,
+  frpc start, frpc stop, frpc add, frps start, frps stop,
   同步terminal配置, 同步命令行配置, 同步shell配置,
   更新terminal配置, 记录命令行工具, push dotfiles, pull dotfiles,
   装了新命令行工具, dotfiles, PowerShell配置同步, 终端配置同步.
@@ -37,9 +37,8 @@ All commands below use `$DOTFILES` as the resolved path.
 | `frpc start` | Start frp client + auto-start | [frp.md](references/frp.md) — "frpc start" |
 | `frpc stop` | Stop frp client + remove auto-start | [frp.md](references/frp.md) — "frpc start" |
 | `frpc add` | Add port mapping to frpc config | [frp.md](references/frp.md) — "frpc add" |
-| `frps start` | Start frp server + systemd | [frp.md](references/frp.md) — "frps start" |
+| `frps start` | Start frp server at /opt/frp/ (ECS) | [frp.md](references/frp.md) — "frps start" |
 | `frps stop` | Stop frp server + remove service | [frp.md](references/frp.md) — "frps start" |
-| `frps add` | Add port mapping to frps config | [frp.md](references/frp.md) — "frps add" |
 | Record new tool | Add to bootstrap.ps1 | [setup.md](references/setup.md) — "Record tool" |
 | New machine setup | Clone + bootstrap + setup | [setup.md](references/setup.md) — "First-time setup" |
 
@@ -47,6 +46,7 @@ All commands below use `$DOTFILES` as the resolved path.
 
 - **Remote**: `https://github.com/ff-journey/dotfile.git`
 - **Privilege escalation**: gsudo for single-command elevation; Developer Mode for symlinks without admin
-- **frp secrets**: `frpc.toml` / `frps.toml` are gitignored. Only `.example` files are tracked
+- **frp client secrets**: `frpc.toml` is gitignored. Only `.example` file tracked
+- **frp server**: config managed manually on ECS at `/opt/frp/`, not via dotfiles
 - `bootstrap.ps1` is idempotent — safe to re-run
 - `setup.ps1` auto-elevates via gsudo if Developer Mode is not enabled

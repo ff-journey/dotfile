@@ -48,12 +48,12 @@ When Claude Code hits "access denied":
 | `setup.ps1` | Symlink creator (auto-elevates if needed) |
 | `frp/frpc.toml.example` | frp client config template |
 | `frp/frpc.ps1` | frp client start/stop (Windows) |
-| `frp/frps.toml.example` | frp server config template |
-| `frp/frps.sh` | frp server start/stop (Linux) |
+| `frp/frps.sh` | frp server start/stop (deploy to ECS `/opt/frp/`) |
 
 ## Notes
 
 - `terminal/settings.json` contains Anaconda paths with `D:\conda` — may differ on other machines
 - gsudo caches credentials briefly — multiple elevated commands only prompt UAC once
-- `frpc.toml` / `frps.toml` are gitignored (secrets). Only `.example` files tracked
+- `frpc.toml` is gitignored (secrets). Only `.example` file tracked
+- ECS frps config managed manually at `/opt/frp/frps.toml`, not via dotfiles
 - Runtime files (`.pid`, `.log`) also gitignored

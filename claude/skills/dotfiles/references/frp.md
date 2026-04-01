@@ -49,18 +49,17 @@ pwsh -File $DOTFILES/frp/frpc.ps1 stop
 
 ## frps start
 
-1. Check `$DOTFILES/frp/frps.toml` exists. If not:
-   - Copy `frps.toml.example` → `frps.toml`
-   - Prompt user to fill in `auth.token`
-2. Run:
+ECS server frp directory: `/opt/frp/` (config managed manually on the server, NOT via dotfiles).
+
+1. Run:
 ```bash
-bash $DOTFILES/frp/frps.sh start
+bash /opt/frp/frps.sh start
 ```
-This starts frps AND creates a systemd service for auto-start.
+This starts frps with `/opt/frp/frps.toml` and creates a systemd service for auto-start.
 
 To stop and remove service:
 ```bash
-bash $DOTFILES/frp/frps.sh stop
+bash /opt/frp/frps.sh stop
 ```
 
 ## frpc add
@@ -82,13 +81,3 @@ pwsh -File $DOTFILES/frp/frpc.ps1 stop
 pwsh -File $DOTFILES/frp/frpc.ps1 start
 ```
 
-## frps add
-
-1. Read `$DOTFILES/frp/frps.toml`.
-2. Server-side typically only needs `bindPort` — no per-proxy config needed for basic TCP proxies.
-3. If using `allowPorts` or XTCP/STCP, append the relevant config to `frps.toml` and update `frps.toml.example`.
-4. If frps is running, remind user to restart:
-```bash
-bash $DOTFILES/frp/frps.sh stop
-bash $DOTFILES/frp/frps.sh start
-```
