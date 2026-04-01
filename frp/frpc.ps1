@@ -64,16 +64,13 @@ switch ($Action) {
         $existing = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
         if (-not $existing) {
             Write-Host "  Registering auto-start task '$TaskName'..." -ForegroundColor Cyan
-            $action = New-ScheduledTaskAction `
-                -Execute "pwsh.exe" `
-                -Argument "-NoProfile -File `"$ScriptDir\frpc.ps1`" start" `
-                -WorkingDirectory $ScriptDir
-            $trigger = New-ScheduledTaskTrigger -AtLogon
-            $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
-            gsudo -- pwsh -Command {
-                param($TaskName, $action, $trigger, $settings)
-                Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force | Out-Null
-            } -args $TaskName, $action, $trigger, $settings
+            $scriptPath = "$ScriptDir\frpc.ps1"
+            gsudo -- pwsh -NoProfile -Command "
+                `$ta = New-ScheduledTaskAction -Execute 'pwsh.exe' -Argument '-NoProfile -File `"$scriptPath`" start' -WorkingDirectory '$ScriptDir'
+                `$tt = New-ScheduledTaskTrigger -AtLogon
+                `$ts = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
+                Register-ScheduledTask -TaskName '$TaskName' -Action `$ta -Trigger `$tt -Settings `$ts -RunLevel Highest -Force | Out-Null
+            "
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "  Auto-start registered." -ForegroundColor Green
             } else {

@@ -16,3 +16,10 @@ type = "tcp"
 localIP = "127.0.0.1"
 localPort = 9901
 remotePort = 9901
+
+[[proxies]]
+name = "ssh-home"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 2222
