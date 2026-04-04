@@ -70,4 +70,10 @@ New-DirSymlink "$dotfiles\claude\skills\dotfiles" $claudeSkillDotfiles
 $claudeSkillCreator = "$env:USERPROFILE\.claude\skills\skill-creator"
 New-DirSymlink "$dotfiles\claude\skills\skill-creator" $claudeSkillCreator
 
+$claudeSkillLearnerCreator = "$env:USERPROFILE\.claude\skills\project-learner-creator"
+New-DirSymlink "$dotfiles\claude\skills\project-learner-creator" $claudeSkillLearnerCreator
+
+$claudeSkillPreviewCreator = "$env:USERPROFILE\.claude\skills\project-preview-creator"
+New-DirSymlink "$dotfiles\claude\skills\project-preview-creator" $claudeSkillPreviewCreator
+
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
