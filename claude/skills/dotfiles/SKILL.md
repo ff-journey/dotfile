@@ -41,6 +41,7 @@ All commands below use `$DOTFILES` as the resolved path.
 | `frps stop` | Stop frp server + remove service | [frp.md](references/frp.md) — "frps start" |
 | Record new tool | Add to bootstrap.ps1 | [setup.md](references/setup.md) — "Record tool" |
 | New machine setup | Clone + bootstrap + setup | [setup.md](references/setup.md) — "First-time setup" |
+| SSH to ECS / run remote cmd | Connect to frp server host | [ecs.md](references/ecs.md) |
 
 ## Quick Reference
 
@@ -48,5 +49,6 @@ All commands below use `$DOTFILES` as the resolved path.
 - **Privilege escalation**: gsudo for single-command elevation; Developer Mode for symlinks without admin
 - **frp client secrets**: `frpc.toml` is gitignored. Only `.example` file tracked
 - **frp server**: config managed manually on ECS at `/opt/frp/`, not via dotfiles
+- **ECS host**: `root@1.14.109.188`, key `C:\Users\Admin\.ssh\id_ed25519_github` — see [ecs.md](references/ecs.md)
 - `bootstrap.ps1` is idempotent — safe to re-run
 - `setup.ps1` auto-elevates via gsudo if Developer Mode is not enabled
