@@ -76,4 +76,7 @@ New-DirSymlink "$dotfiles\claude\skills\project-learner-creator" $claudeSkillLea
 $claudeSkillPreviewCreator = "$env:USERPROFILE\.claude\skills\project-preview-creator"
 New-DirSymlink "$dotfiles\claude\skills\project-preview-creator" $claudeSkillPreviewCreator
 
+$claudeSkillInterviewCreator = "$env:USERPROFILE\.claude\skills\interview-prep-creator"
+New-DirSymlink "$dotfiles\claude\skills\interview-prep-creator" $claudeSkillInterviewCreator
+
 Write-Host "`nDone! Restart your terminal to apply changes.`n" -ForegroundColor Cyan
