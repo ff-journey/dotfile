@@ -12,7 +12,7 @@ description: "为任意项目自动生成专属的'题库式项目复习 Skill'�
 ## 启动时确认
 
 1. **目标项目路径**（默认当前工作目录）
-2. **skill 输出路径**（默认 `{项目根目录}/project-review/`）
+2. **skill 输出路径**（默认 `{项目根目录}/.claude/skills/project-review/`）
 3. **学习侧重**：特别想深入的模块？（可选，默认全覆盖）
 4. **语言**（默认中文）
 
@@ -80,7 +80,7 @@ description: "为任意项目自动生成专属的'题库式项目复习 Skill'�
 生成以下目录结构：
 
 ```
-project-review/
+.claude/skills/project-review/
 ├── SKILL.md              # 复习老师 Agent 指令
 ├── review_progress.md    # 初始进度文件
 └── references/

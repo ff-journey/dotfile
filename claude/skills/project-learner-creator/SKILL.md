@@ -12,7 +12,7 @@ description: "为任意项目自动生成专属的'面试式项目学习 Skill'�
 ## 启动时确认
 
 1. **目标项目路径**（默认当前工作目录）
-2. **skill 输出路径**（默认 `{项目根目录}/project-learner/`）
+2. **skill 输出路径**（默认 `{项目根目录}/.claude/skills/project-learner/`）
 3. **学习侧重**：特别想深入的模块？（可选，默认全覆盖）
 4. **语言**（默认中文）
 
@@ -73,7 +73,7 @@ description: "为任意项目自动生成专属的'面试式项目学习 Skill'�
 生成以下目录结构：
 
 ```
-project-learner/
+.claude/skills/project-learner/
 ├── SKILL.md                    # 面试教练 Agent 指令（含知识域地图）
 └── references/
     └── LEARNING_PROGRESS.md    # 初始进度文件（全部 ⬜ 未学习）
